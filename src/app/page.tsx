@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>Droplo</div>
+  return <div>Comitlint</div>
 }
