@@ -1,3 +1,3 @@
 export default function Home() {
-  return <div>Comitlint</div>
+  return <div>fix module export</div>
 }
