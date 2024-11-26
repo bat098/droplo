@@ -8,6 +8,9 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        mainFont: "Inter",
+      },
       colors: {
         // foreground
         foreground: {
