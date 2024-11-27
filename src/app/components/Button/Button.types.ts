@@ -10,6 +10,7 @@ export interface ButtonInterface {
   children: React.ReactNode
   variant?: ButtonVariant
   color?: ButtonColors
+  icon?: React.ReactNode
 }
 
 export type VaraintsClassesType = {
