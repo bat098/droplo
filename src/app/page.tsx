@@ -1,13 +1,11 @@
 "use client"
 
-import IconButton from "./components/IconButton/IconButton"
+import Label from "./components/Label/Label"
 
 export default function Home() {
   return (
     <div>
-      <IconButton>
-        <img src="/icons/trash.svg" alt="magnifier" />
-      </IconButton>
+      <Label>test</Label>
     </div>
   )
 }
