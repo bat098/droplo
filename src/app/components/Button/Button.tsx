@@ -4,6 +4,7 @@ import {
   CommonClassesType,
   VaraintsClassesType,
 } from "./Button.types"
+import clsx from "clsx"
 
 const Button = (props: ButtonInterface) => {
   const {
@@ -13,6 +14,7 @@ const Button = (props: ButtonInterface) => {
     icon,
     onClick,
     disabled,
+    className,
   } = props
 
   const commonClasses: CommonClassesType = {
@@ -40,10 +42,12 @@ const Button = (props: ButtonInterface) => {
   const commonStyles = commonClasses[variant]
   const variantColorStyles = variantsClasses[variant][color]
 
-  const styles = `${baseStyles} ${commonStyles} ${variantColorStyles}`
-
   return (
-    <button className={styles} onClick={onClick} disabled={disabled}>
+    <button
+      className={clsx(baseStyles, commonStyles, variantColorStyles, className)}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {icon}
       {children}
     </button>

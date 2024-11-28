@@ -1,18 +1,18 @@
 "use client"
 
-import { useState } from "react"
-import FoprmGroup from "./components/FormGroup/FoprmGroup"
-import Label from "./components/Label/Label"
-import TextField from "./components/TextField/TextField"
+import ButtonGroup from "./components/ButtonGroup/ButtonGroup"
+import Button from "./components/Button/Button"
 
 export default function Home() {
-  const [value, setValue] = useState("")
   return (
-    <div>
-      <FoprmGroup>
-        <Label>test</Label>
-        <TextField value={value} onChange={(e) => setValue(e.target.value)} />
-      </FoprmGroup>
+    <div className="w-screen h-screen flex items-center justify-center">
+      <ButtonGroup>
+        <Button>Option 1</Button>
+        <Button>Option 2</Button>
+        <Button>Option 3</Button>
+        <Button>Option 4</Button>
+        <Button>Option 5</Button>
+      </ButtonGroup>
     </div>
   )
 }

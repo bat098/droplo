@@ -13,6 +13,7 @@ export interface ButtonInterface {
   icon?: React.ReactNode
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   disabled?: boolean
+  className?: string
 }
 
 export type VaraintsClassesType = {
