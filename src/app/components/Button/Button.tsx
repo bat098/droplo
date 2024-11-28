@@ -6,7 +6,14 @@ import {
 } from "./Button.types"
 
 const Button = (props: ButtonInterface) => {
-  const { children, variant = "contained", color = "deepPurple", icon } = props
+  const {
+    children,
+    variant = "contained",
+    color = "deepPurple",
+    icon,
+    onClick,
+    disabled,
+  } = props
 
   const commonClasses: CommonClassesType = {
     contained: "text-white",
@@ -36,7 +43,7 @@ const Button = (props: ButtonInterface) => {
   const styles = `${baseStyles} ${commonStyles} ${variantColorStyles}`
 
   return (
-    <button className={styles}>
+    <button className={styles} onClick={onClick} disabled={disabled}>
       {icon}
       {children}
     </button>

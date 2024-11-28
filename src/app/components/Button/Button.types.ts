@@ -11,6 +11,8 @@ export interface ButtonInterface {
   variant?: ButtonVariant
   color?: ButtonColors
   icon?: React.ReactNode
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
+  disabled?: boolean
 }
 
 export type VaraintsClassesType = {
