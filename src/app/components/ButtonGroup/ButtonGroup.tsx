@@ -7,13 +7,13 @@ const ButtonGroup = ({ children }: ButtonGroupInterface) => {
 
     switch (index) {
       case 0:
-        classname = "rounded-l-lg rounded-r-none"
+        classname = "rounded-l-lg rounded-r-none border-r-0"
         break
       case children.length - 1:
         classname = "rounded-r-lg rounded-l-none"
         break
       default:
-        classname = "rounded-none"
+        classname = "rounded-none border-r-0"
         break
     }
 

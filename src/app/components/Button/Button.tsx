@@ -29,6 +29,7 @@ const Button = (props: ButtonInterface) => {
       purple: `bg-purple border-purple`,
       darkGray: `bg-darkGray border-darkGray`,
     },
+
     outlined: {
       deepPurple: `text-deepPurple border-purple`,
       lightPurple: `text-lightPurple border-lightPurple`,
