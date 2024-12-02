@@ -19,6 +19,7 @@ export default {
       purple: "#6941C6",
       lightPurple: "#D6BBFB",
       deepPurple: "#7F56D9",
+      danger: "#d32f2f",
     },
 
     extend: {
