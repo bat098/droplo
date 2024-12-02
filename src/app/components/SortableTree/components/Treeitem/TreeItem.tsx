@@ -86,9 +86,9 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
               {collapseIcon}
             </Action>
           )}
-          <div className={styles.Text}>
-            <div>{name}</div>
-            <div>{link}</div>
+          <div className={"flex flex-col gap-y-1.5 grow ms-[1px]"}>
+            <div className="text-sm font-semibold text-darkNavy">{name}</div>
+            <div className="text-sm text-mediumGray">{link}</div>
           </div>
           {!clone && (
             <GroupedActions onRemove={onRemove} onEdit={onEdit} onAdd={onAdd} />
