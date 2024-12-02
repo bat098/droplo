@@ -6,5 +6,5 @@ export interface IconButtonInterface {
   children?: React.ReactNode
   className?: string
   innerRef?: React.RefObject<HTMLButtonElement>
-  type: ButtonType
+  type?: ButtonType
 }
