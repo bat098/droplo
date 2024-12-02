@@ -1,4 +1,11 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import { createPortal } from "react-dom"
 import {
   Announcements,
@@ -39,30 +46,6 @@ import { sortableTreeKeyboardCoordinates } from "./keyboardCoordinates"
 import { SortableTreeItem } from "./components"
 import { CSS } from "@dnd-kit/utilities"
 
-const initialItems: TreeItems = [
-  {
-    id: "1",
-    name: "Home",
-    link: "Home link",
-    children: [],
-  },
-  {
-    id: "2",
-    name: "Collections",
-    link: "Collections link",
-    children: [
-      { id: "2.1", name: "Spring", link: "Spring link", children: [] },
-      { id: "2.2", name: "Summer", link: "Summer link", children: [] },
-    ],
-  },
-  {
-    id: "3",
-    name: "About Us",
-    link: "About Us link",
-    children: [],
-  },
-]
-
 const measuring = {
   droppable: {
     strategy: MeasuringStrategy.Always,
@@ -94,11 +77,12 @@ const dropAnimationConfig: DropAnimation = {
 
 interface Props {
   collapsible?: boolean
-  defaultItems?: TreeItems
+  items: TreeItems
   indentationWidth?: number
   indicator?: boolean
   removable?: boolean
   editable?: boolean
+  setItems: Dispatch<SetStateAction<TreeItems>>
 }
 
 const handleEdit = (id: UniqueIdentifier) => {
@@ -111,13 +95,13 @@ const handleAdd = () => {
 
 export function SortableTree({
   collapsible,
-  defaultItems = initialItems,
   indicator = false,
   indentationWidth = 50,
   removable,
   editable,
+  setItems,
+  items,
 }: Props) {
-  const [items, setItems] = useState(() => defaultItems)
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null)
   const [offsetLeft, setOffsetLeft] = useState(0)
@@ -128,7 +112,7 @@ export function SortableTree({
 
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree(items)
-    const collapsedItems = flattenedTree.reduce<string[]>(
+    const collapsedItems = flattenedTree.reduce<UniqueIdentifier[]>(
       (acc, { children, collapsed, id }) =>
         collapsed && children.length ? [...acc, id] : acc,
       []
