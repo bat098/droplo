@@ -214,7 +214,6 @@ export function SortableTree({
             <SortableTreeItem
               key={id}
               id={id}
-              // value={id}
               depth={id === activeId && projected ? projected.depth : depth}
               indentationWidth={indentationWidth}
               indicator={indicator}
@@ -243,7 +242,8 @@ export function SortableTree({
                 depth={activeItem.depth}
                 clone
                 childCount={getChildCount(items, activeId) + 1}
-                value={activeId.toString()}
+                name={activeItem.name}
+                link={""}
                 indentationWidth={indentationWidth}
               />
             ) : null}

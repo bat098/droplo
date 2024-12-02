@@ -91,11 +91,9 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             <div>{name}</div>
             <div>{link}</div>
           </div>
-          {/* <span className={styles.Text}>{link}</span> */}
-
-          {/* {!clone && onRemove && <Remove onClick={onRemove} />} */}
-          <GroupedActions onRemove={onRemove} onEdit={onEdit} onAdd={onAdd} />
-
+          {!clone && (
+            <GroupedActions onRemove={onRemove} onEdit={onEdit} onAdd={onAdd} />
+          )}
           {clone && childCount && childCount > 1 ? (
             <span className={styles.Count}>{childCount}</span>
           ) : null}
