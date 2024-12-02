@@ -158,7 +158,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         </div>
 
         {/* FORM */}
-        {isForm && (
+        {!ghost && isForm && (
           <div className="ps-16 py-5 pe-6">
             <Form
               handleCancel={closeForm}

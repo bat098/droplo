@@ -80,7 +80,6 @@ export default function Home() {
               <SortableTree
                 indicator
                 removable
-                editable
                 items={items}
                 setItems={setItems}
               />

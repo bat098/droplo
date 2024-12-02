@@ -88,7 +88,7 @@ interface Props {
 export function SortableTree({
   collapsible,
   indicator = false,
-  indentationWidth = 50,
+  indentationWidth = 64,
   removable,
   setItems,
   items,
