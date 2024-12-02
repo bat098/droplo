@@ -17,33 +17,33 @@ export const ItemsContex = createContext<{
 }>({ items: [], setItems: () => {} })
 
 export default function Home() {
-  const initialItems: TreeItems = [
-    {
-      id: "1",
-      name: "Home",
-      link: "Home link",
-      children: [],
-    },
-    {
-      id: "2",
-      name: "Collections",
-      link: "Collections link",
-      children: [
-        { id: "2.1", name: "Spring", link: "Spring link", children: [] },
-        { id: "2.2", name: "Summer", link: "Summer link", children: [] },
-      ],
-    },
-    {
-      id: "3",
-      name: "About Us",
-      link: "About Us link",
-      children: [],
-    },
-  ]
+  // const initialItems: TreeItems = [
+  //   {
+  //     id: "1",
+  //     name: "Home",
+  //     link: "Home link",
+  //     children: [],
+  //   },
+  //   {
+  //     id: "2",
+  //     name: "Collections",
+  //     link: "Collections link",
+  //     children: [
+  //       { id: "2.1", name: "Spring", link: "Spring link", children: [] },
+  //       { id: "2.2", name: "Summer", link: "Summer link", children: [] },
+  //     ],
+  //   },
+  //   {
+  //     id: "3",
+  //     name: "About Us",
+  //     link: "About Us link",
+  //     children: [],
+  //   },
+  // ]
 
-  // const initialItems2: TreeItems = []
+  const initialItems2: TreeItems = []
 
-  const [items, setItems] = useState(initialItems)
+  const [items, setItems] = useState(initialItems2)
 
   const [isForm, setIsForm] = useState(false)
 
@@ -64,7 +64,7 @@ export default function Home() {
         <Container>
           {/* <Form /> */}
           {items.length === 0 ? (
-            <div className="flex flex-col gap-y-8 border  ">
+            <div className="flex flex-col gap-y-8">
               <EmptyMenu onClick={() => setIsForm(true)} />
               {isForm && (
                 <Form
