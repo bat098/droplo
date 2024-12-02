@@ -1,8 +1,10 @@
 import Button from "@/app/components/Button/Button"
 import ButtonGroup from "@/app/components/ButtonGroup/ButtonGroup"
 import React from "react"
+import { GroupedActionsInterface } from "./GroupedActions.types"
 
-const GroupedActions = ({ onRemove, onEdit, onAdd }) => {
+const GroupedActions = (props: GroupedActionsInterface) => {
+  const { onRemove = () => {}, onEdit = () => {}, onAdd = () => {} } = props
   return (
     <ButtonGroup>
       <Button onClick={onRemove} variant="outlined" color="darkGray">

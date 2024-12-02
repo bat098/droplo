@@ -5,7 +5,7 @@ import clsx from "clsx"
 const Container = (props: ContainerInterface) => {
   const { children, className } = props
   return (
-    <div className={clsx("container mx-auto px-5", className)}>{children}</div>
+    <div className={clsx("container mx-auto p-5", className)}>{children}</div>
   )
 }
 

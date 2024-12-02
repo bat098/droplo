@@ -89,10 +89,6 @@ const handleEdit = (id: UniqueIdentifier) => {
   console.log(`edit: ${id}`)
 }
 
-const handleAdd = () => {
-  console.log("add")
-}
-
 export function SortableTree({
   collapsible,
   indicator = false,
@@ -209,7 +205,6 @@ export function SortableTree({
               }
               onRemove={removable ? () => handleRemove(id) : undefined}
               onEdit={editable ? () => handleEdit(id) : undefined}
-              onAdd={handleAdd}
               name={name}
               link={link}
             />

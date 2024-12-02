@@ -55,6 +55,7 @@ export function SortableTreeItem({
       name={name}
       attributes={attributes}
       listeners={listeners}
+      id={id}
       {...props}
     />
   )

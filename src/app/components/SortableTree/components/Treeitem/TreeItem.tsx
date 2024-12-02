@@ -1,11 +1,17 @@
-import React, { forwardRef, HTMLAttributes } from "react"
+import React, { forwardRef, HTMLAttributes, useContext, useState } from "react"
 import classNames from "clsx"
 import styles from "./TreeItem.module.css"
 import { Action } from "../Action"
 import GroupedActions from "../GroupedActions/GroupedActions"
 import Move from "../Move/Move"
-import { DraggableAttributes } from "@dnd-kit/core"
+import { DraggableAttributes, UniqueIdentifier } from "@dnd-kit/core"
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities"
+import Form from "@/app/components/Form/Form"
+import { FormValuesInterface } from "@/app/components/Form/Form.types"
+import { v4 as uuidv4 } from "uuid"
+import { TreeItem as TreeItemInterface } from "../../types"
+import { ItemsContex } from "@/app/page"
+import { addChildToParentById } from "./helpers"
 
 export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   childCount?: number
@@ -22,11 +28,11 @@ export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   onCollapse?(): void
   onRemove?(): void
   onEdit?(): void
-  onAdd?(): void
   wrapperRef?(node: HTMLLIElement): void
 
   name: string
   link: string
+  id: UniqueIdentifier
 }
 
 export const TreeItem = forwardRef<HTMLDivElement, Props>(
@@ -44,17 +50,40 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       indicator,
       collapsed,
       onCollapse,
-      onRemove,
-      onEdit,
-      onAdd,
+      onRemove = () => {},
+      onEdit = () => {},
       style,
       name,
       link,
       wrapperRef,
+      id,
       ...props
     },
     ref
   ) => {
+    const [isForm, setIsForm] = useState(false)
+
+    const openForm = () => {
+      setIsForm(true)
+    }
+    const closeForm = () => {
+      setIsForm(false)
+    }
+
+    const { items, setItems } = useContext(ItemsContex)
+
+    const handleCreateNode = (values: FormValuesInterface) => {
+      const newNode: TreeItemInterface = {
+        id: uuidv4(),
+        children: [],
+        link: values.link,
+        name: values.name,
+      }
+
+      const newItems = addChildToParentById(items, id, newNode)
+      setItems(newItems)
+    }
+
     return (
       <li
         className={classNames(
@@ -91,12 +120,26 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
             <div className="text-sm text-mediumGray">{link}</div>
           </div>
           {!clone && (
-            <GroupedActions onRemove={onRemove} onEdit={onEdit} onAdd={onAdd} />
+            <GroupedActions
+              onRemove={onRemove}
+              onEdit={onEdit}
+              onAdd={openForm}
+            />
           )}
           {clone && childCount && childCount > 1 ? (
             <span className={styles.Count}>{childCount}</span>
           ) : null}
         </div>
+
+        {/* FORM */}
+        {isForm && (
+          <div className="ps-16 py-5 pe-6">
+            <Form
+              handleCancel={closeForm}
+              handleCreateNode={handleCreateNode}
+            />
+          </div>
+        )}
       </li>
     )
   }

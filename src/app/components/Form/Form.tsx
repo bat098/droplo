@@ -5,13 +5,14 @@ import TextField from "../TextField/TextField"
 import { Controller, useForm } from "react-hook-form"
 import Label from "../Label/Label"
 import Button from "../Button/Button"
-import { FormValuesInterface } from "./Form.types"
+import { FormInterface, FormValuesInterface } from "./Form.types"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import Image from "next/image"
 import IconButton from "../IconButton/IconButton"
 
-const Form = () => {
+const Form = (props: FormInterface) => {
+  const { handleCreateNode, handleCancel } = props
   // validation schema
   const resolver = yup.object({
     name: yup.string().required("Pole wymagane"),
@@ -30,7 +31,7 @@ const Form = () => {
   //  handlers
 
   const onSubmit = (values: FormValuesInterface) => {
-    console.log(values)
+    handleCreateNode(values)
   }
 
   const handleDelete = () => {
@@ -85,7 +86,11 @@ const Form = () => {
               />
             </FormGroup>
             <div className="flex gap-x-2 mt-5">
-              <Button variant="outlined" color="darkGray">
+              <Button
+                onClick={handleCancel}
+                variant="outlined"
+                color="darkGray"
+              >
                 Anuluj
               </Button>
               <Button color="purple" variant="outlined" type="submit">

@@ -20,6 +20,7 @@ export default {
       lightPurple: "#D6BBFB",
       deepPurple: "#7F56D9",
       danger: "#d32f2f",
+      defaultGrey: "#F5F5F5",
     },
 
     extend: {
