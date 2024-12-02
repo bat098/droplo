@@ -10,12 +10,20 @@ interface Props extends TreeItemProps {
   id: UniqueIdentifier
 }
 
+type SortableTreeItemProps = Omit<Props, "listeners" | "attributes">
+
 const animateLayoutChanges: AnimateLayoutChanges = ({
   isSorting,
   wasDragging,
 }) => (isSorting || wasDragging ? false : true)
 
-export function SortableTreeItem({ id, depth, name, link, ...props }: Props) {
+export function SortableTreeItem({
+  id,
+  depth,
+  name,
+  link,
+  ...props
+}: SortableTreeItemProps) {
   const {
     attributes,
     isDragging,
@@ -45,10 +53,8 @@ export function SortableTreeItem({ id, depth, name, link, ...props }: Props) {
       disableInteraction={isSorting}
       link={link}
       name={name}
-      handleProps={{
-        ...attributes,
-        ...listeners,
-      }}
+      attributes={attributes}
+      listeners={listeners}
       {...props}
     />
   )

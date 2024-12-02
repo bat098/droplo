@@ -1,11 +1,11 @@
 import React, { forwardRef, HTMLAttributes } from "react"
 import classNames from "clsx"
-
 import styles from "./TreeItem.module.css"
-import { Handle } from "../Handle"
 import { Action } from "../Action"
-// import { Remove } from "../Remove"
 import GroupedActions from "../GroupedActions/GroupedActions"
+import Move from "../Move/Move"
+import { DraggableAttributes } from "@dnd-kit/core"
+import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities"
 
 export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   childCount?: number
@@ -15,11 +15,10 @@ export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   disableInteraction?: boolean
   disableSelection?: boolean
   ghost?: boolean
-  // eslint-disable-next-line
-  handleProps?: any
+  attributes: DraggableAttributes
+  listeners: SyntheticListenerMap | undefined
   indicator?: boolean
   indentationWidth: number
-  // value: string
   onCollapse?(): void
   onRemove?(): void
   onEdit?(): void
@@ -39,7 +38,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       disableSelection,
       disableInteraction,
       ghost,
-      handleProps,
+      attributes,
+      listeners,
       indentationWidth,
       indicator,
       collapsed,
@@ -48,7 +48,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       onEdit,
       onAdd,
       style,
-      // value,
       name,
       link,
       wrapperRef,
@@ -75,7 +74,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         {...props}
       >
         <div className={styles.TreeItem} ref={ref} style={style}>
-          <Handle {...handleProps} />
+          <Move attributes={attributes} listeners={listeners} />
           {onCollapse && (
             <Action
               onClick={onCollapse}
