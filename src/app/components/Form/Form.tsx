@@ -41,8 +41,11 @@ const Form = (props: FormInterface) => {
     handleValues(values)
   }
 
-  const handleDelete = () => {
-    console.log("delete")
+  const handleClear = () => {
+    reset({
+      link: "",
+      name: "",
+    })
   }
 
   //   #################################################
@@ -112,7 +115,7 @@ const Form = (props: FormInterface) => {
               </Button>
             </div>
           </div>
-          <IconButton onClick={handleDelete}>
+          <IconButton onClick={handleClear}>
             <Image
               src={`/icons/trash.svg`}
               width={20}
