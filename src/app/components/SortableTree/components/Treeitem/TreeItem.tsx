@@ -11,7 +11,7 @@ import { FormValuesInterface } from "@/app/components/Form/Form.types"
 import { v4 as uuidv4 } from "uuid"
 import { TreeItem as TreeItemInterface } from "../../types"
 import { ItemsContex } from "@/app/page"
-import { addChildToParentById } from "./helpers"
+import { addChildToParentById, updateTreeItemById } from "./helpers"
 
 export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   childCount?: number
@@ -27,7 +27,6 @@ export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   indentationWidth: number
   onCollapse?(): void
   onRemove?(): void
-  onEdit?(): void
   wrapperRef?(node: HTMLLIElement): void
 
   name: string
@@ -51,7 +50,6 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       collapsed,
       onCollapse,
       onRemove = () => {},
-      onEdit = () => {},
       style,
       name,
       link,
@@ -62,6 +60,12 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
     ref
   ) => {
     const [isForm, setIsForm] = useState(false)
+    const [isEditabled, setIsEditabled] = useState(false)
+
+    const [defaultData, setDefaultData] = useState<FormValuesInterface>({
+      link: "",
+      name: "",
+    })
 
     const openForm = () => {
       setIsForm(true)
@@ -79,9 +83,31 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         link: values.link,
         name: values.name,
       }
-
       const newItems = addChildToParentById(items, id, newNode)
       setItems(newItems)
+    }
+
+    const handleEdit = (values: FormValuesInterface) => {
+      const newItems = updateTreeItemById(items, id, values)
+      setItems(newItems)
+    }
+
+    const handleOnAdd = () => {
+      setIsEditabled(false)
+      openForm()
+      setDefaultData({
+        link: "",
+        name: "",
+      })
+    }
+
+    const handleOnEdit = () => {
+      setIsEditabled(true)
+      openForm()
+      setDefaultData({
+        link,
+        name,
+      })
     }
 
     return (
@@ -122,8 +148,8 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           {!clone && (
             <GroupedActions
               onRemove={onRemove}
-              onEdit={onEdit}
-              onAdd={openForm}
+              onEdit={handleOnEdit}
+              onAdd={handleOnAdd}
             />
           )}
           {clone && childCount && childCount > 1 ? (
@@ -136,7 +162,9 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
           <div className="ps-16 py-5 pe-6">
             <Form
               handleCancel={closeForm}
-              handleCreateNode={handleCreateNode}
+              handleValues={isEditabled ? handleEdit : handleCreateNode}
+              defaultData={defaultData}
+              isEditabled={isEditabled}
             />
           </div>
         )}

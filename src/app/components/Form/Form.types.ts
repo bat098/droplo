@@ -4,6 +4,8 @@ export interface FormValuesInterface {
 }
 
 export interface FormInterface {
-  handleCreateNode: (values: FormValuesInterface) => void
   handleCancel: () => void
+  defaultData: FormValuesInterface
+  handleValues: (values: FormValuesInterface) => void
+  isEditabled: boolean
 }

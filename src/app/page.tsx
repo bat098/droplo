@@ -69,12 +69,14 @@ export default function Home() {
               {isForm && (
                 <Form
                   handleCancel={() => setIsForm(false)}
-                  handleCreateNode={handleCreateNode}
+                  handleValues={handleCreateNode}
+                  defaultData={{ link: "", name: "" }}
+                  isEditabled={false}
                 />
               )}
             </div>
           ) : (
-            <div className="border border-lightGray  bg-defaultGrey rounded">
+            <div className="border border-lightGray bg-defaultGrey rounded">
               <SortableTree
                 indicator
                 removable
@@ -87,7 +89,9 @@ export default function Home() {
                 <div className="py-5 px-6 bg-lightestGray border-b border-lightBlueGray">
                   <Form
                     handleCancel={() => setIsForm(false)}
-                    handleCreateNode={handleCreateNode}
+                    handleValues={handleCreateNode}
+                    defaultData={{ link: "", name: "" }}
+                    isEditabled={false}
                   />
                 </div>
               )}

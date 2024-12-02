@@ -81,12 +81,8 @@ interface Props {
   indentationWidth?: number
   indicator?: boolean
   removable?: boolean
-  editable?: boolean
-  setItems: Dispatch<SetStateAction<TreeItems>>
-}
 
-const handleEdit = (id: UniqueIdentifier) => {
-  console.log(`edit: ${id}`)
+  setItems: Dispatch<SetStateAction<TreeItems>>
 }
 
 export function SortableTree({
@@ -94,7 +90,6 @@ export function SortableTree({
   indicator = false,
   indentationWidth = 50,
   removable,
-  editable,
   setItems,
   items,
 }: Props) {
@@ -204,7 +199,6 @@ export function SortableTree({
                   : undefined
               }
               onRemove={removable ? () => handleRemove(id) : undefined}
-              onEdit={editable ? () => handleEdit(id) : undefined}
               name={name}
               link={link}
             />

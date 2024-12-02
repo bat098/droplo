@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import Card from "../Card/Card"
 import FormGroup from "../FormGroup/FoprmGroup"
 import TextField from "../TextField/TextField"
@@ -10,9 +10,10 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import Image from "next/image"
 import IconButton from "../IconButton/IconButton"
+import ErrorMessage from "../ErrorMessage/ErrorMessage"
 
 const Form = (props: FormInterface) => {
-  const { handleCreateNode, handleCancel } = props
+  const { handleValues, handleCancel, defaultData, isEditabled = false } = props
   // validation schema
   const resolver = yup.object({
     name: yup.string().required("Pole wymagane"),
@@ -20,18 +21,24 @@ const Form = (props: FormInterface) => {
   })
 
   //   react-hook-form
-  const { control, handleSubmit } = useForm<FormValuesInterface>({
-    defaultValues: {
-      name: "",
-      link: "",
-    },
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<FormValuesInterface>({
+    defaultValues: defaultData,
     resolver: yupResolver(resolver),
   })
+
+  useEffect(() => {
+    reset(defaultData)
+  }, [defaultData, reset])
 
   //  handlers
 
   const onSubmit = (values: FormValuesInterface) => {
-    handleCreateNode(values)
+    handleValues(values)
   }
 
   const handleDelete = () => {
@@ -61,6 +68,9 @@ const Form = (props: FormInterface) => {
                   />
                 )}
               />
+              {errors?.name && (
+                <ErrorMessage>{errors.name.message}</ErrorMessage>
+              )}
             </FormGroup>
             <FormGroup>
               <Label>Link</Label>
@@ -84,6 +94,9 @@ const Form = (props: FormInterface) => {
                   />
                 )}
               />
+              {errors?.link && (
+                <ErrorMessage>{errors.link.message}</ErrorMessage>
+              )}
             </FormGroup>
             <div className="flex gap-x-2 mt-5">
               <Button
@@ -93,8 +106,9 @@ const Form = (props: FormInterface) => {
               >
                 Anuluj
               </Button>
+
               <Button color="purple" variant="outlined" type="submit">
-                Dodaj
+                {isEditabled ? " Zapisz zmiany" : "Dodaj"}
               </Button>
             </div>
           </div>
