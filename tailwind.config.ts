@@ -22,6 +22,10 @@ export default {
     },
 
     extend: {
+      screens: {
+        "2xl": "1208px",
+        xl: "1208px",
+      },
       boxShadow: {
         primaryShadow: "0 1px 2px 0px rgba(16, 24, 40, 0.05)",
       },

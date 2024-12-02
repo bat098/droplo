@@ -1,10 +1,16 @@
 import React from "react"
 import { Cardinterface } from "./Card.types"
+import clsx from "clsx"
 
 const Card = (props: Cardinterface) => {
-  const { children } = props
+  const { children, className } = props
   return (
-    <div className="bg-white border border-lightGray rounded-lg py-5 px-6 ">
+    <div
+      className={clsx(
+        "bg-white border border-lightGray rounded-lg py-5 px-6 ",
+        className
+      )}
+    >
       {children}
     </div>
   )

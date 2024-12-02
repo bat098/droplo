@@ -1,11 +1,13 @@
 "use client"
-
-import Card from "./components/Card/Card"
+import Container from "@/app/components/Container/Container"
+import { SortableTree } from "./components/SortableTree/SortableTree"
 
 export default function Home() {
   return (
-    <div className="w-screen h-screen flex items-center justify-center">
-      <Card>test</Card>
+    <div>
+      <Container>
+        <SortableTree indicator removable editable />
+      </Container>
     </div>
   )
 }
