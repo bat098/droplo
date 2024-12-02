@@ -6,6 +6,8 @@ export type ButtonColors = keyof Pick<
   "deepPurple" | "lightPurple" | "purple" | "darkGray"
 >
 
+export type ButtonType = "button" | "submit"
+
 export interface ButtonInterface {
   children: React.ReactNode
   variant?: ButtonVariant
@@ -14,6 +16,7 @@ export interface ButtonInterface {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   disabled?: boolean
   className?: string
+  type?: ButtonType
 }
 
 export type VaraintsClassesType = {

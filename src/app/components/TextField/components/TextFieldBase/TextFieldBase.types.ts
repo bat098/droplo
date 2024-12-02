@@ -5,4 +5,5 @@ export interface TextFieldBaseInterface {
   disabled?: boolean
   placeholder?: string
   className?: string
+  name: string
 }

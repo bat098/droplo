@@ -3,9 +3,17 @@ import { IconButtonInterface } from "./IconButton.types"
 import clsx from "clsx"
 
 const IconButton = (props: IconButtonInterface) => {
-  const { children, disabled, onClick, innerRef, className } = props
+  const {
+    children,
+    disabled,
+    onClick,
+    innerRef,
+    className,
+    type = "button",
+  } = props
   return (
     <button
+      type={type}
       ref={innerRef}
       onClick={onClick}
       disabled={disabled}

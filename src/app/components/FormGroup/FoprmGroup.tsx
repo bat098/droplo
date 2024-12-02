@@ -3,7 +3,7 @@ import { FormGroupInterface } from "./FormGroup.types"
 
 const FormGroup = (props: FormGroupInterface) => {
   const { children } = props
-  return <div className="flex flex-col gap-1.5">{children}</div>
+  return <div className="flex flex-col gap-1.5 mb-2">{children}</div>
 }
 
 export default FormGroup

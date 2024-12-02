@@ -15,6 +15,7 @@ const Button = (props: ButtonInterface) => {
     onClick,
     disabled,
     className,
+    type = "button",
   } = props
 
   const commonClasses: CommonClassesType = {
@@ -48,6 +49,7 @@ const Button = (props: ButtonInterface) => {
       className={clsx(baseStyles, commonStyles, variantColorStyles, className)}
       onClick={onClick}
       disabled={disabled}
+      type={type}
     >
       {icon}
       {children}
