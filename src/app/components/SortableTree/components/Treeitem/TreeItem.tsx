@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid"
 import { TreeItem as TreeItemInterface } from "../../types"
 import { ItemsContex } from "@/app/page"
 import { addChildToParentById, updateTreeItemById } from "./helpers"
+import clsx from "clsx"
 
 export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   childCount?: number
@@ -128,7 +129,15 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
         }
         {...props}
       >
-        <div className={styles.TreeItem} ref={ref} style={style}>
+        <div
+          className={clsx(
+            styles.TreeItem,
+            styles.TreeIteNoBorderRight,
+            depth ? styles.TreeItemChild : styles.TreeIteNoBorderLeft
+          )}
+          ref={ref}
+          style={style}
+        >
           <Move attributes={attributes} listeners={listeners} />
           {onCollapse && (
             <Action
