@@ -43,43 +43,14 @@ import { SortableTreeItem } from "./components"
 import { CSS } from "@dnd-kit/utilities"
 import CreatePortalWrapper from "../CreatePortalWrapper/CreatePortalWrapper"
 
-const measuring = {
-  droppable: {
-    strategy: MeasuringStrategy.Always,
-  },
-}
-
-const dropAnimationConfig: DropAnimation = {
-  keyframes({ transform }) {
-    return [
-      { opacity: 1, transform: CSS.Transform.toString(transform.initial) },
-      {
-        opacity: 0,
-        transform: CSS.Transform.toString({
-          ...transform.final,
-          x: transform.final.x + 5,
-          y: transform.final.y + 5,
-        }),
-      },
-    ]
-  },
-  easing: "ease-out",
-  sideEffects({ active }) {
-    active.node.animate([{ opacity: 0 }, { opacity: 1 }], {
-      duration: defaultDropAnimation.duration,
-      easing: defaultDropAnimation.easing,
-    })
-  },
-}
-
-export function SortableTree({
+export const SortableTree = ({
   collapsible,
   indicator = false,
   indentationWidth = 64,
   removable,
   setItems,
   items,
-}: SortableTreeInterface) {
+}: SortableTreeInterface) => {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null)
   const [offsetLeft, setOffsetLeft] = useState(0)
@@ -87,6 +58,8 @@ export function SortableTree({
     parentId: UniqueIdentifier | null
     overId: UniqueIdentifier
   } | null>(null)
+
+  // MEMO
 
   const flattenedItems = useMemo(() => {
     const flattenedTree = flattenTree(items)
@@ -101,6 +74,43 @@ export function SortableTree({
       activeId != null ? [activeId, ...collapsedItems] : collapsedItems
     )
   }, [activeId, items])
+
+  const sortedIds = useMemo(
+    () => flattenedItems.map(({ id }) => id),
+    [flattenedItems]
+  )
+
+  // VARIABLES
+
+  const dropAnimationConfig: DropAnimation = {
+    keyframes({ transform }) {
+      return [
+        { opacity: 1, transform: CSS.Transform.toString(transform.initial) },
+        {
+          opacity: 0,
+          transform: CSS.Transform.toString({
+            ...transform.final,
+            x: transform.final.x + 5,
+            y: transform.final.y + 5,
+          }),
+        },
+      ]
+    },
+    easing: "ease-out",
+    sideEffects({ active }) {
+      active.node.animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: defaultDropAnimation.duration,
+        easing: defaultDropAnimation.easing,
+      })
+    },
+  }
+
+  const measuring = {
+    droppable: {
+      strategy: MeasuringStrategy.Always,
+    },
+  }
+
   const projected =
     activeId && overId
       ? getProjection(
@@ -111,13 +121,16 @@ export function SortableTree({
           indentationWidth
         )
       : null
+
   const sensorContext: SensorContext = useRef({
     items: flattenedItems,
     offset: offsetLeft,
   })
+
   const [coordinateGetter] = useState(() =>
     sortableTreeKeyboardCoordinates(sensorContext, indicator, indentationWidth)
   )
+
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -125,20 +138,9 @@ export function SortableTree({
     })
   )
 
-  const sortedIds = useMemo(
-    () => flattenedItems.map(({ id }) => id),
-    [flattenedItems]
-  )
   const activeItem = activeId
     ? flattenedItems.find(({ id }) => id === activeId)
     : null
-
-  useEffect(() => {
-    sensorContext.current = {
-      items: flattenedItems,
-      offset: offsetLeft,
-    }
-  }, [flattenedItems, offsetLeft])
 
   const announcements: Announcements = {
     onDragStart({ active }) {
@@ -158,63 +160,18 @@ export function SortableTree({
     },
   }
 
-  return (
-    <DndContext
-      accessibility={{ announcements }}
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      measuring={measuring}
-      onDragStart={handleDragStart}
-      onDragMove={handleDragMove}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}
-    >
-      <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
-        {flattenedItems.map(
-          ({ id, children, collapsed, depth, name, link }) => (
-            <SortableTreeItem
-              key={id}
-              id={id}
-              depth={id === activeId && projected ? projected.depth : depth}
-              indentationWidth={indentationWidth}
-              indicator={indicator}
-              collapsed={Boolean(collapsed && children.length)}
-              onCollapse={
-                collapsible && children.length
-                  ? () => handleCollapse(id)
-                  : undefined
-              }
-              onRemove={removable ? () => handleRemove(id) : undefined}
-              name={name}
-              link={link}
-            />
-          )
-        )}
-        <CreatePortalWrapper>
-          <DragOverlay
-            dropAnimation={dropAnimationConfig}
-            modifiers={indicator ? [adjustTranslate] : undefined}
-          >
-            {activeId && activeItem ? (
-              <SortableTreeItem
-                id={activeId}
-                depth={activeItem.depth}
-                clone
-                childCount={getChildCount(items, activeId) + 1}
-                name={activeItem.name}
-                link={""}
-                indentationWidth={indentationWidth}
-              />
-            ) : null}
-          </DragOverlay>
-          ,
-        </CreatePortalWrapper>
-      </SortableContext>
-    </DndContext>
-  )
+  // SIDE EFFECTS
 
-  function handleDragStart({ active: { id: activeId } }: DragStartEvent) {
+  useEffect(() => {
+    sensorContext.current = {
+      items: flattenedItems,
+      offset: offsetLeft,
+    }
+  }, [flattenedItems, offsetLeft])
+
+  // FUNCTIONS
+
+  const handleDragStart = ({ active: { id: activeId } }: DragStartEvent) => {
     setActiveId(activeId)
     setOverId(activeId)
 
@@ -232,15 +189,41 @@ export function SortableTree({
     }
   }
 
-  function handleDragMove({ delta }: DragMoveEvent) {
+  const handleDragMove = ({ delta }: DragMoveEvent) => {
     setOffsetLeft(delta.x)
   }
 
-  function handleDragOver({ over }: DragOverEvent) {
+  const handleDragOver = ({ over }: DragOverEvent) => {
     setOverId(over?.id ?? null)
   }
 
-  function handleDragEnd({ active, over }: DragEndEvent) {
+  const resetState = () => {
+    setOverId(null)
+    setActiveId(null)
+    setOffsetLeft(0)
+    setCurrentPosition(null)
+    if (typeof document !== "undefined") {
+      document.body.style.setProperty("cursor", "")
+    }
+  }
+
+  const handleDragCancel = () => {
+    resetState()
+  }
+
+  const handleRemove = (id: UniqueIdentifier) => {
+    setItems((items) => removeItem(items, id))
+  }
+
+  const handleCollapse = (id: UniqueIdentifier) => {
+    setItems((items) =>
+      setProperty(items, id, "collapsed", (value) => {
+        return !value
+      })
+    )
+  }
+
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
     resetState()
 
     if (projected && over) {
@@ -261,38 +244,18 @@ export function SortableTree({
     }
   }
 
-  function handleDragCancel() {
-    resetState()
-  }
-
-  function resetState() {
-    setOverId(null)
-    setActiveId(null)
-    setOffsetLeft(0)
-    setCurrentPosition(null)
-    if (typeof document !== "undefined") {
-      document.body.style.setProperty("cursor", "")
+  const adjustTranslate: Modifier = ({ transform }) => {
+    return {
+      ...transform,
+      y: transform.y - 25,
     }
   }
 
-  function handleRemove(id: UniqueIdentifier) {
-    console.log("usuń")
-    setItems((items) => removeItem(items, id))
-  }
-
-  function handleCollapse(id: UniqueIdentifier) {
-    setItems((items) =>
-      setProperty(items, id, "collapsed", (value) => {
-        return !value
-      })
-    )
-  }
-
-  function getMovementAnnouncement(
+  const getMovementAnnouncement = (
     eventName: string,
     activeId: UniqueIdentifier,
     overId?: UniqueIdentifier
-  ) {
+  ) => {
     if (overId && projected) {
       if (eventName !== "onDragEnd") {
         if (
@@ -346,11 +309,63 @@ export function SortableTree({
 
     return
   }
-}
 
-const adjustTranslate: Modifier = ({ transform }) => {
-  return {
-    ...transform,
-    y: transform.y - 25,
-  }
+  // ####################################################################
+  // ####################################################################
+  // ####################################################################
+
+  return (
+    <DndContext
+      accessibility={{ announcements }}
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      measuring={measuring}
+      onDragStart={handleDragStart}
+      onDragMove={handleDragMove}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+      onDragCancel={handleDragCancel}
+    >
+      <SortableContext items={sortedIds} strategy={verticalListSortingStrategy}>
+        {flattenedItems.map(
+          ({ id, children, collapsed, depth, name, link }) => (
+            <SortableTreeItem
+              key={id}
+              id={id}
+              depth={id === activeId && projected ? projected.depth : depth}
+              indentationWidth={indentationWidth}
+              indicator={indicator}
+              collapsed={Boolean(collapsed && children.length)}
+              onCollapse={
+                collapsible && children.length
+                  ? () => handleCollapse(id)
+                  : undefined
+              }
+              onRemove={removable ? () => handleRemove(id) : undefined}
+              name={name}
+              link={link}
+            />
+          )
+        )}
+        <CreatePortalWrapper>
+          <DragOverlay
+            dropAnimation={dropAnimationConfig}
+            modifiers={indicator ? [adjustTranslate] : undefined}
+          >
+            {activeId && activeItem ? (
+              <SortableTreeItem
+                id={activeId}
+                depth={activeItem.depth}
+                clone
+                childCount={getChildCount(items, activeId) + 1}
+                name={activeItem.name}
+                link={""}
+                indentationWidth={indentationWidth}
+              />
+            ) : null}
+          </DragOverlay>
+        </CreatePortalWrapper>
+      </SortableContext>
+    </DndContext>
+  )
 }
