@@ -1,4 +1,4 @@
-import type { MutableRefObject } from "react"
+import type { Dispatch, MutableRefObject, SetStateAction } from "react"
 import type { UniqueIdentifier } from "@dnd-kit/core"
 
 export interface TreeItem {
@@ -21,3 +21,12 @@ export type SensorContext = MutableRefObject<{
   items: FlattenedItem[]
   offset: number
 }>
+
+export interface SortableTreeInterface {
+  collapsible?: boolean
+  items: TreeItems
+  indentationWidth?: number
+  indicator?: boolean
+  removable?: boolean
+  setItems: Dispatch<SetStateAction<TreeItems>>
+}

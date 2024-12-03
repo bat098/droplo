@@ -1,11 +1,4 @@
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react"
+import React, { useEffect, useMemo, useRef, useState } from "react"
 import {
   Announcements,
   DndContext,
@@ -40,7 +33,11 @@ import {
   removeChildrenOf,
   setProperty,
 } from "./utilities"
-import type { FlattenedItem, SensorContext, TreeItems } from "./types"
+import type {
+  FlattenedItem,
+  SensorContext,
+  SortableTreeInterface,
+} from "./types"
 import { sortableTreeKeyboardCoordinates } from "./keyboardCoordinates"
 import { SortableTreeItem } from "./components"
 import { CSS } from "@dnd-kit/utilities"
@@ -75,16 +72,6 @@ const dropAnimationConfig: DropAnimation = {
   },
 }
 
-interface Props {
-  collapsible?: boolean
-  items: TreeItems
-  indentationWidth?: number
-  indicator?: boolean
-  removable?: boolean
-
-  setItems: Dispatch<SetStateAction<TreeItems>>
-}
-
 export function SortableTree({
   collapsible,
   indicator = false,
@@ -92,7 +79,7 @@ export function SortableTree({
   removable,
   setItems,
   items,
-}: Props) {
+}: SortableTreeInterface) {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null)
   const [overId, setOverId] = useState<UniqueIdentifier | null>(null)
   const [offsetLeft, setOffsetLeft] = useState(0)
