@@ -68,3 +68,7 @@ Ensure you have the following installed on your system:
 
 3. Open the application in your browser at
    http://localhost:3000.
+
+### Public build address
+
+https://droplo.vercel.app/
