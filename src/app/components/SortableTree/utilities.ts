@@ -3,7 +3,8 @@ import { arrayMove } from "@dnd-kit/sortable"
 
 import type { FlattenedItem, TreeItem, TreeItems } from "./types"
 
-export const iOS = /iPad|iPhone|iPod/.test(navigator.platform)
+export const iOS =
+  typeof window !== "undefined" && /iPhone|iPad|iPod/.test(navigator.userAgent)
 
 function getDragDepth(offset: number, indentationWidth: number) {
   return Math.round(offset / indentationWidth)
@@ -95,16 +96,16 @@ export function flattenTree(items: TreeItems): FlattenedItem[] {
 }
 
 export function buildTree(flattenedItems: FlattenedItem[]): TreeItems {
-  const root: TreeItem = { id: "root", children: [] }
+  const root: TreeItem = { id: "root", link: "", name: "", children: [] }
   const nodes: Record<string, TreeItem> = { [root.id]: root }
   const items = flattenedItems.map((item) => ({ ...item, children: [] }))
 
   for (const item of items) {
-    const { id, children } = item
+    const { id, children, name, link } = item
     const parentId = item.parentId ?? root.id
     const parent = nodes[parentId] ?? findItem(items, parentId)
 
-    nodes[id] = { id, children }
+    nodes[id] = { id, children, link, name }
     parent.children.push(item)
   }
 

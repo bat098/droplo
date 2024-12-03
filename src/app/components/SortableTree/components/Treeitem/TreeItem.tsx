@@ -1,4 +1,4 @@
-import React, { forwardRef, HTMLAttributes, useContext, useState } from "react"
+import React, { forwardRef, HTMLAttributes, useState } from "react"
 import classNames from "clsx"
 import styles from "./TreeItem.module.css"
 import { Action } from "../Action"
@@ -10,9 +10,9 @@ import Form from "@/app/components/Form/Form"
 import { FormValuesInterface } from "@/app/components/Form/Form.types"
 import { v4 as uuidv4 } from "uuid"
 import { TreeItem as TreeItemInterface } from "../../types"
-import { ItemsContex } from "@/app/page"
 import { addChildToParentById, updateTreeItemById } from "./helpers"
 import clsx from "clsx"
+import { useItems } from "@/app/hooks"
 
 export interface Props extends Omit<HTMLAttributes<HTMLLIElement>, "id"> {
   childCount?: number
@@ -75,7 +75,7 @@ export const TreeItem = forwardRef<HTMLDivElement, Props>(
       setIsForm(false)
     }
 
-    const { items, setItems } = useContext(ItemsContex)
+    const { items, setItems } = useItems()
 
     const handleCreateNode = (values: FormValuesInterface) => {
       const newNode: TreeItemInterface = {
