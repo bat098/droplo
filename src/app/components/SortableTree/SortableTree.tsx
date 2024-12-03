@@ -6,7 +6,6 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { createPortal } from "react-dom"
 import {
   Announcements,
   DndContext,
@@ -45,6 +44,7 @@ import type { FlattenedItem, SensorContext, TreeItems } from "./types"
 import { sortableTreeKeyboardCoordinates } from "./keyboardCoordinates"
 import { SortableTreeItem } from "./components"
 import { CSS } from "@dnd-kit/utilities"
+import CreatePortalWrapper from "../CreatePortalWrapper/CreatePortalWrapper"
 
 const measuring = {
   droppable: {
@@ -204,7 +204,7 @@ export function SortableTree({
             />
           )
         )}
-        {createPortal(
+        <CreatePortalWrapper>
           <DragOverlay
             dropAnimation={dropAnimationConfig}
             modifiers={indicator ? [adjustTranslate] : undefined}
@@ -220,9 +220,9 @@ export function SortableTree({
                 indentationWidth={indentationWidth}
               />
             ) : null}
-          </DragOverlay>,
-          document.body
-        )}
+          </DragOverlay>
+          ,
+        </CreatePortalWrapper>
       </SortableContext>
     </DndContext>
   )
@@ -240,7 +240,9 @@ export function SortableTree({
       })
     }
 
-    document.body.style.setProperty("cursor", "grabbing")
+    if (typeof document !== "undefined") {
+      document.body.style.setProperty("cursor", "grabbing")
+    }
   }
 
   function handleDragMove({ delta }: DragMoveEvent) {
@@ -281,8 +283,9 @@ export function SortableTree({
     setActiveId(null)
     setOffsetLeft(0)
     setCurrentPosition(null)
-
-    document.body.style.setProperty("cursor", "")
+    if (typeof document !== "undefined") {
+      document.body.style.setProperty("cursor", "")
+    }
   }
 
   function handleRemove(id: UniqueIdentifier) {
